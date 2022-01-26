@@ -34,7 +34,7 @@ def action_next():
 #we need options to fetch:
 def get_options(que_num):
     global db_options,rb
-    option1.config(text=db_options[que_num][0],value=1,variable=rb)
+    option1.config(text=db_options[que_num][0],value=1,variable=)
     option2.config(text=db_options[que_num][1],value=2,variable=rb)
     option3.config(text=db_options[que_num][2],value=3,variable=rb)
     option4.config(text=db_options[que_num][3],value=4,variable=rb)
