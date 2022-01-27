@@ -1,7 +1,7 @@
-from cgitb import text
-import tkinter
 from database import need_question,need_answer,need_options
 from tkinter import *
+from tkinter import messagebox as mb
+
 
 root = Tk()
 root.geometry("400x400")
@@ -16,11 +16,18 @@ num = 0
 
 def action_next():
     global num
-    num += 1
-    get_questions(num)
-    get_options(num)
-    check_ans(num)
-        
+    #print("Rewriting the action_next")
+    try:
+        if(num<4):
+            check_ans(num)
+            num += 1
+            get_questions(num)
+            get_options(num)
+            opt_selected.set(0)
+    except:
+        mb.showinfo("Result","You score "+str(score))
+    
+    
 #we need options to fetch:
 
 def get_questions(que_num):
@@ -37,11 +44,11 @@ def get_options(que_num):
     option4.config(text=db_options[que_num][3],value=4,variable=opt_selected)
     
 def check_ans(que_num):
-    s = 0
-    global db_answers
+    global score
     if(str(opt_selected.get())==db_answers[que_num]):
-        s += 4
-    print(s)
+        score += 4
+    print(score) 
+
 
 
    
