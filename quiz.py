@@ -1,3 +1,4 @@
+from cgitb import text
 from logging import root
 from database import need_answer,need_options,need_question,get_username,add_score
 from tkinter import *
@@ -45,8 +46,6 @@ def quiz_gui():
             show_result()
             quiz_over()
         
-
-
 
     def get_question(que_num):
         que_label.config(text=db_questions[que_num])
@@ -97,9 +96,10 @@ def quiz_gui():
       
 
 
-    
-    timer = Label(quiz,text=time_text,font=("Code New Roman",14))
-    timer.place(x=700,y=50)
+    time_label = Label(quiz,text="TIME: ",font=("Code New Roman",14,"bold"),bg="white")
+    time_label.place(x=600,y=50)
+    timer = Label(quiz,text=time_text,font=("Code New Roman",14),bg="white")
+    timer.place(x=650,y=50)
     
     que_label=Label(quiz,text=db_questions[0],font=("Code New Roman",18),bg="white")
     que_label.place(x=175,y=100)
@@ -122,8 +122,6 @@ def quiz_gui():
     countdown()
     quiz.mainloop()
     
-
-
 
 def quiz_over():
     quiz.destroy()

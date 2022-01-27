@@ -52,8 +52,6 @@ def sign_up():
     signup_button = Button(root,text="SIGN UP",font=("Code New Roman",14,"bold"),bg="green",fg="white",width=15,command=sign_in)
     signup_button.place(x=325,y=350)
     
-    app_btn = Button(root,text="APP",font=("Code New Roman",14,"bold"),bg="green",fg="white",width=15,command=go_back)
-    app_btn.place(x=325,y=400)
     root.mainloop()
 
 
