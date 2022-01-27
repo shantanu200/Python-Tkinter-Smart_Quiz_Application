@@ -98,4 +98,3 @@ def add_score(username,score):
     cursor.execute(que,(username,score))
     con.commit()
 
-add_score("Shantanu",100)
