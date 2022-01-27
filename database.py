@@ -1,4 +1,7 @@
+import re
 import mysql.connector as mydbconnector
+
+session_username = None
 
 def dbConnect():
     con = mydbconnector.connect(host="localhost",username="root",password="",database="python")
@@ -17,7 +20,13 @@ def insert_db(username,email,password):
     cursor.execute(insert,data)
     con.commit()
 
-
+def set_username(curr_username):
+    global session_username
+    session_username = curr_username
+    
+def get_username():
+    return session_username
+   
 
 # SIGN IN BACKEND
 def search_db(username,password):
@@ -27,12 +36,12 @@ def search_db(username,password):
     cursor = con.cursor()
     fetch = """SELECT * FROM add_data WHERE username = %s"""
     result =cursor.execute(fetch,(username,))
-    print(result)
     table = cursor.fetchall()
     for row in table:
         g_password=row[3]
     
     if(password==g_password):
+        set_username(username)
         return True
     else:
         return False 

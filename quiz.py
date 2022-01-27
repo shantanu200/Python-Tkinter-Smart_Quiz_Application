@@ -1,6 +1,7 @@
-from database import need_answer,need_options,need_question
+from database import need_answer,need_options,need_question,get_username
 from tkinter import *
 from tkinter import messagebox as mb
+import time
 
 
 quiz = Tk()
@@ -9,6 +10,8 @@ score = 0
 pos_que = 0
 neg_que = 0
 skip_que = 0
+
+print(get_username())
 
 def quiz_gui():
     quiz.geometry("800x500")
@@ -89,4 +92,5 @@ def quiz_gui():
     next_btn.place(x=600,y=400)
     quiz.mainloop()
 
-quiz_gui()
+
+
