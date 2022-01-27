@@ -1,51 +1,92 @@
+from database import need_answer,need_options,need_question
 from tkinter import *
 from tkinter import messagebox as mb
-from database import need_question,need_options,need_answer
+
 
 quiz = Tk()
-que_num = 0
+num = 0
+score = 0
+pos_que = 0
+neg_que = 0
+skip_que = 0
 
 def quiz_gui():
-   
-
     quiz.geometry("800x500")
     quiz.title("Quiz-Application")
     quiz.config(background="white")
     quiz.resizable(0,0)
+    quiz_label = Label(quiz,text="QUIZ APPLICATION",width=55,bg="black",fg="white",font=("Code New Roman",20,"bold"))
+    quiz_label.place(x=0,y=2)
+    opt_selected = IntVar()
+    opt_selected.set(0)
+
+    db_questions = need_question()
+    db_options = need_options()
+    db_answers = need_answer()
     
-    quiz_label = Label(quiz,text="QUIZ APPLICATION",bg="white",font=("Code New Roman",24,"bold"))
-    quiz_label.place(x=275,y=50)
     
-    def all_question(num):
-        #Storing the question,options and answers in local variables
-        questions = need_question()
+
+    def action_next():
+        global num
+        try:
+            if(num<4):
+                check_ans(num)
+                num += 1
+                get_question(num)
+                get_options(num)
+                opt_selected.set(0)
+        except:
+            show_result()
         
-        answers = need_answer()
+
+
+
+    def get_question(que_num):
+        que_label.config(text=db_questions[que_num])
     
-        question_label = Label(quiz,text=questions[num],font=("Code New Roman",14,"bold"),bg="white")
-        question_label.place(x=200,y=150)
-   
-    def all_options(num):
-        options = need_options()
-        i = 0
-        y_var = 200
-        while(i<4):
-            option_label = Radiobutton(quiz,text=options[num][i],font=("Code New Roman",14,"bold"),bg="white")
-            option_label.place(x=200,y=y_var)
-            y_var += 50
-            i += 1
+    def get_options(que_num):
+        option1.config(text=db_options[que_num][0],value=1,variable=opt_selected)
+        option2.config(text=db_options[que_num][1],value=2,variable=opt_selected)
+        option3.config(text=db_options[que_num][2],value=3,variable=opt_selected)
+        option4.config(text=db_options[que_num][3],value=4,variable=opt_selected)
     
-    def next_data():
-        global que_num
-        q = que_num
-        q += 1
-        all_question(que_num)
-        all_options(que_num)
+    def check_ans(que_num):
+        global score,pos_que,neg_que,skip_que
+        if(str(opt_selected.get())==db_answers[que_num]):
+            pos_que += 1
+            score += 4
+        elif(str(opt_selected.get())!=db_answers[que_num] and opt_selected.get()!=0):
+            neg_que += 1
+            score -= 1
+        else:
+            skip_que += 1
+        print(score)
+    
+    def show_result():
+        r_score = "Total Score: "+str(score)
+        r_pos = "Total Positive: "+str(pos_que)
+        r_neg = "Total Negative: "+str(neg_que)
+        r_skip = "Total Skip: "+str(skip_que)
+        mb.showinfo("Result","\n".join([r_score,r_pos,r_neg,r_skip]))
 
 
+    que_label=Label(quiz,text=db_questions[0],font=("Code New Roman",18),bg="white")
+    que_label.place(x=175,y=100)
 
-    next_button = Button(quiz,text="NEXT",font=("Code New Roman",14,"bold"),bg="green",fg="white",command=next_data)
-    next_button.place(x=600,y=400)
+    option1 = Radiobutton(quiz,text=db_options[0][0],value=1,variable=opt_selected,font=("Code New Roman",14),bg="white")
+    option1.place(x=175,y=150)
+
+    option2 = Radiobutton(quiz,text=db_options[0][1],value=2,variable=opt_selected,font=("Code New Roman",14),bg="white")
+    option2.place(x=175,y=200)
+
+    option3 = Radiobutton(quiz,text=db_options[0][2],value=3,variable=opt_selected,font=("Code New Roman",14),bg="white")
+    option3.place(x=175,y=250)
+
+    option4 = Radiobutton(quiz,text=db_options[0][3],value=4,variable=opt_selected,font=("Code New Roman",14),bg="white")
+    option4.place(x=175,y=300)
+
+    next_btn = Button(quiz,text="NEXT",font=("Code New Roman",16,"bold"),bg="green",fg="white",width=10,command=action_next)
+    next_btn.place(x=600,y=400)
     quiz.mainloop()
-    
+
 quiz_gui()
