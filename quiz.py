@@ -1,3 +1,4 @@
+from logging import root
 from database import need_answer,need_options,need_question,get_username,add_score
 from tkinter import *
 from tkinter import messagebox as mb
@@ -11,7 +12,9 @@ pos_que = 0
 neg_que = 0
 skip_que = 0
 session_username = get_username()
-
+min_label = 3
+sec_label = 59
+time_text = str(min_label)+":"+str(sec_label)
 
 def quiz_gui():
     quiz.geometry("800x500")
@@ -40,6 +43,7 @@ def quiz_gui():
                 opt_selected.set(0)
         except:
             show_result()
+            quiz_over()
         
 
 
@@ -66,14 +70,37 @@ def quiz_gui():
         print(score)
     
     def show_result():
-        add_score(session_username,score)
+        #add_score(session_username,score)
         r_score = "Total Score: "+str(score)
         r_pos = "Total Positive: "+str(pos_que)
         r_neg = "Total Negative: "+str(neg_que)
         r_skip = "Total Skip: "+str(skip_que)
         mb.showinfo("Result","\n".join([r_score,r_pos,r_neg,r_skip]))
 
+    def countdown():
+        global min_label,sec_label
+        if(min_label>=0):
+            if(sec_label==0):
+                min_label -= 1
+                sec_label = 59
+            sec_label -= 1
+            if(sec_label<=9):
+                fun_time = str(min_label)+":0"+str(sec_label)
+            else:
+                fun_time = str(min_label)+":"+str(sec_label)
+        else:
+            show_result()
+            quiz_over()
 
+        timer.config(text=fun_time)
+        timer.after(1000,countdown)
+      
+
+
+    
+    timer = Label(quiz,text=time_text,font=("Code New Roman",14))
+    timer.place(x=700,y=50)
+    
     que_label=Label(quiz,text=db_questions[0],font=("Code New Roman",18),bg="white")
     que_label.place(x=175,y=100)
 
@@ -91,7 +118,14 @@ def quiz_gui():
 
     next_btn = Button(quiz,text="NEXT",font=("Code New Roman",16,"bold"),bg="green",fg="white",width=10,command=action_next)
     next_btn.place(x=600,y=400)
+
+    countdown()
     quiz.mainloop()
+    
 
 
 
+def quiz_over():
+    quiz.destroy()
+    
+quiz_gui()
