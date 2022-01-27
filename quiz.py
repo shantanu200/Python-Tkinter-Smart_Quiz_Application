@@ -1,4 +1,4 @@
-from database import need_answer,need_options,need_question,get_username
+from database import need_answer,need_options,need_question,get_username,add_score
 from tkinter import *
 from tkinter import messagebox as mb
 import time
@@ -10,8 +10,8 @@ score = 0
 pos_que = 0
 neg_que = 0
 skip_que = 0
+session_username = get_username()
 
-print(get_username())
 
 def quiz_gui():
     quiz.geometry("800x500")
@@ -66,6 +66,7 @@ def quiz_gui():
         print(score)
     
     def show_result():
+        add_score(session_username,score)
         r_score = "Total Score: "+str(score)
         r_pos = "Total Positive: "+str(pos_que)
         r_neg = "Total Negative: "+str(neg_que)

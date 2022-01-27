@@ -91,3 +91,11 @@ def need_answer():
     return db_answers
 
 
+def add_score(username,score):
+    con = dbConnect()
+    cursor = con.cursor()
+    que = "INSERT INTO score_user(username,score) VALUES(%s,%s)"
+    cursor.execute(que,(username,score))
+    con.commit()
+
+add_score("Shantanu",100)
