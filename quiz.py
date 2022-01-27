@@ -48,7 +48,7 @@ def quiz_gui():
         
 
     def get_question(que_num):
-        que_label.config(text=db_questions[que_num])
+        que_label.config(text="Q"+str(que_num+1)+". "+db_questions[que_num])
     
     def get_options(que_num):
         option1.config(text=db_options[que_num][0],value=1,variable=opt_selected)
@@ -101,7 +101,7 @@ def quiz_gui():
     timer = Label(quiz,text=time_text,font=("Code New Roman",14),bg="white")
     timer.place(x=650,y=50)
     
-    que_label=Label(quiz,text=db_questions[0],font=("Code New Roman",18),bg="white")
+    que_label=Label(quiz,text="Q1. "+db_questions[0],font=("Code New Roman",18,"bold"),bg="white")
     que_label.place(x=175,y=100)
 
     option1 = Radiobutton(quiz,text=db_options[0][0],value=1,variable=opt_selected,font=("Code New Roman",14),bg="white")
@@ -116,9 +116,19 @@ def quiz_gui():
     option4 = Radiobutton(quiz,text=db_options[0][3],value=4,variable=opt_selected,font=("Code New Roman",14),bg="white")
     option4.place(x=175,y=300)
 
-    next_btn = Button(quiz,text="NEXT",font=("Code New Roman",16,"bold"),bg="green",fg="white",width=10,command=action_next)
-    next_btn.place(x=600,y=400)
-
+    next_btn = Button(quiz,text="NEXT",font=("Code New Roman",16,"bold"),bg="#648c11",fg="white",width=10,command=action_next)
+    next_btn.place(x=250,y=400)
+    
+    def exit():
+        exitbox = mb.askquestion("Exit Quiz","You really want to exit",icon="warning")
+        if(exitbox=="yes"):
+            quiz_over()
+        else:
+            return None
+    
+    end_quiz = Button(quiz,text="EXIT",font=("Code New Roman",16,"bold"),bg="#ff033e",fg="white",width=10,command=exit)
+    end_quiz.place(x=400,y=400)
+    
     countdown()
     quiz.mainloop()
     
