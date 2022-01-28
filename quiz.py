@@ -1,24 +1,26 @@
-from cgitb import text
-from logging import root
-from database import need_answer, need_options, need_question, get_username, add_score
+from database import need_answer, need_options, need_question, get_username,add_score,get_student_score
 from tkinter import *
 from tkinter import messagebox as mb
-import time
 
 
 quiz = Tk()
+
 num = 0
 score = 0
 pos_que = 0
 neg_que = 0
 skip_que = 0
 session_username = get_username()
-min_label = 3
-sec_label = 59
+min_label = 0
+sec_label = 0
 time_text = str(min_label)+":"+str(sec_label)
+db_question = []
+db_options = []
+db_answers = []
 
 
 def quiz_gui():
+    global db_question,db_options,db_answers,session_username,min_label,sec_label,time_text
     quiz.geometry("800x500")
     quiz.title("Quiz-Application")
     quiz.config(background="white")
@@ -28,10 +30,39 @@ def quiz_gui():
     quiz_label.place(x=0, y=2)
     opt_selected = IntVar()
     opt_selected.set(0)
+    
+    user_score = get_student_score(session_username)
+    if(user_score==0):
+        db_questions = need_question("smart_quiz")
+        db_options = need_options("smart_quiz")
+        db_answers = need_answer("smart_quiz")
+        min_label = 4
+        sec_label = 59
+        
+    else:
+        if(user_score>=20):
+            db_questions = need_question("hard_quiz")
+            db_options = need_options("hard_quiz")
+            db_answers = need_answer("hard_quiz")
+            min_label = 3
+            sec_label = 59
+        
+        elif(user_score>=10 and user_score <=20):
+            db_questions = need_question("medium-quiz")
+            db_options = need_options("medium-quiz")
+            db_answers = need_answer("medium-quiz")
+            min_label = 3
+            sec_label = 59
+        
+        else:
+            db_questions = need_question("smart_quiz")
+            db_options = need_options("smart_quiz")
+            db_answers = need_answer("smart_quiz")
+            min_label = 4
+            sec_label = 59
 
-    db_questions = need_question()
-    db_options = need_options()
-    db_answers = need_answer()
+
+        
 
     def action_next():
         global num
@@ -72,7 +103,7 @@ def quiz_gui():
         print(score)
 
     def show_result():
-        # add_score(session_username,score)
+        add_score(session_username,score)
         r_score = "Total Score: "+str(score)
         r_pos = "Total Positive: "+str(pos_que)
         r_neg = "Total Negative: "+str(neg_que)
@@ -105,24 +136,24 @@ def quiz_gui():
     timer.place(x=650, y=50)
 
     que_label = Label(
-        quiz, text="Q1. "+db_questions[0], font=("Code New Roman", 18, "bold"), bg="white")
-    que_label.place(x=175, y=100)
+        quiz, text="Q1. "+db_questions[0], font=("Code New Roman", 16, "bold"), bg="white")
+    que_label.place(x=100, y=100)
 
     option1 = Radiobutton(quiz, text=db_options[0][0], value=1, variable=opt_selected, font=(
         "Code New Roman", 14), bg="white")
-    option1.place(x=175, y=150)
+    option1.place(x=100, y=150)
 
     option2 = Radiobutton(quiz, text=db_options[0][1], value=2, variable=opt_selected, font=(
         "Code New Roman", 14), bg="white")
-    option2.place(x=175, y=200)
+    option2.place(x=100, y=200)
 
     option3 = Radiobutton(quiz, text=db_options[0][2], value=3, variable=opt_selected, font=(
         "Code New Roman", 14), bg="white")
-    option3.place(x=175, y=250)
+    option3.place(x=100, y=250)
 
     option4 = Radiobutton(quiz, text=db_options[0][3], value=4, variable=opt_selected, font=(
         "Code New Roman", 14), bg="white")
-    option4.place(x=175, y=300)
+    option4.place(x=100, y=300)
 
     next_btn = Button(quiz, text="NEXT", font=("Code New Roman", 16, "bold"),
                       bg="#648c11", fg="white", width=10, command=action_next)
@@ -147,5 +178,3 @@ def quiz_gui():
 def quiz_over():
     quiz.destroy()
 
-
-quiz_gui()

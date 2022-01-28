@@ -53,20 +53,19 @@ def search_db(username, password):
         return False
 
 
-def fetch_data():
-
+def fetch_data(db_name):
     db_options = []
     db_answers = []
     con = dbConnect()
     cursor = con.cursor()
-    fetch = "SELECT * FROM smart_quiz"
+    fetch = "SELECT * FROM "+str(db_name)
     cursor.execute(fetch)
     question = cursor.fetchall()
     return question
 
 
-def need_question():
-    question = fetch_data()
+def need_question(db_name):
+    question = fetch_data(db_name)
     db_questions = []
 
     for row in question:
@@ -75,8 +74,8 @@ def need_question():
     return db_questions
 
 
-def need_options():
-    question = fetch_data()
+def need_options(db_name):
+    question = fetch_data(db_name)
     db_options = []
 
     for row in question:
@@ -90,8 +89,8 @@ def need_options():
     return db_options
 
 
-def need_answer():
-    question = fetch_data()
+def need_answer(db_name):
+    question = fetch_data(db_name)
     db_answers = []
 
     for row in question:
@@ -167,3 +166,21 @@ def hard_insert(user_question, option1, option2, option3, option4, answer):
         cursor.execute(insert_data, data)
         con.commit()
         return True
+
+def get_student_score(username):
+    con = dbConnect()
+    cursor = con.cursor()
+    que = "SELECT score FROM score_user WHERE username = %s"
+    cursor.execute(que,(username,))
+    table = cursor.fetchall()
+    row_count = 0
+    score = 0
+    for row in table:
+        score = row[0]
+        row_count += 1
+    
+    return score
+
+
+
+
