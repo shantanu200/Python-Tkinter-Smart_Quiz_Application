@@ -127,4 +127,3 @@ def add_que():
                  14, "bold"), bg="red", fg="white", command=validate_question)
     btn.place(x=350, y=420)
     add.mainloop()
-

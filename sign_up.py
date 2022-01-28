@@ -79,4 +79,3 @@ def rediect():
     sign_in()
 
 
-sign_up()

@@ -167,20 +167,17 @@ def hard_insert(user_question, option1, option2, option3, option4, answer):
         con.commit()
         return True
 
+
 def get_student_score(username):
     con = dbConnect()
     cursor = con.cursor()
     que = "SELECT score FROM score_user WHERE username = %s"
-    cursor.execute(que,(username,))
+    cursor.execute(que, (username,))
     table = cursor.fetchall()
     row_count = 0
     score = 0
     for row in table:
         score = row[0]
         row_count += 1
-    
+
     return score
-
-
-
-

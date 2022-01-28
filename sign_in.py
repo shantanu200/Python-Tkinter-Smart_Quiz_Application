@@ -59,4 +59,3 @@ def sign_in_destroy():
     root.destroy()
 
 
-sign_in()

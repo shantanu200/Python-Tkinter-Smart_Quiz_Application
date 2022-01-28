@@ -1,4 +1,4 @@
-from database import need_answer, need_options, need_question, get_username,add_score,get_student_score
+from database import need_answer, need_options, need_question, get_username, add_score, get_student_score
 from tkinter import *
 from tkinter import messagebox as mb
 
@@ -20,7 +20,7 @@ db_answers = []
 
 
 def quiz_gui():
-    global db_question,db_options,db_answers,session_username,min_label,sec_label,time_text
+    global db_question, db_options, db_answers, session_username, min_label, sec_label, time_text
     quiz.geometry("800x500")
     quiz.title("Quiz-Application")
     quiz.config(background="white")
@@ -30,39 +30,36 @@ def quiz_gui():
     quiz_label.place(x=0, y=2)
     opt_selected = IntVar()
     opt_selected.set(0)
-    
+
     user_score = get_student_score(session_username)
-    if(user_score==0):
+    if(user_score == 0):
         db_questions = need_question("smart_quiz")
         db_options = need_options("smart_quiz")
         db_answers = need_answer("smart_quiz")
         min_label = 4
         sec_label = 59
-        
+
     else:
-        if(user_score>=20):
+        if(user_score >= 20):
             db_questions = need_question("hard_quiz")
             db_options = need_options("hard_quiz")
             db_answers = need_answer("hard_quiz")
             min_label = 3
             sec_label = 59
-        
-        elif(user_score>=10 and user_score <=20):
+
+        elif(user_score >= 10 and user_score <= 20):
             db_questions = need_question("medium-quiz")
             db_options = need_options("medium-quiz")
             db_answers = need_answer("medium-quiz")
             min_label = 3
             sec_label = 59
-        
+
         else:
             db_questions = need_question("smart_quiz")
             db_options = need_options("smart_quiz")
             db_answers = need_answer("smart_quiz")
             min_label = 4
             sec_label = 59
-
-
-        
 
     def action_next():
         global num
@@ -103,7 +100,7 @@ def quiz_gui():
         print(score)
 
     def show_result():
-        add_score(session_username,score)
+        add_score(session_username, score)
         r_score = "Total Score: "+str(score)
         r_pos = "Total Positive: "+str(pos_que)
         r_neg = "Total Negative: "+str(neg_que)
@@ -177,4 +174,3 @@ def quiz_gui():
 
 def quiz_over():
     quiz.destroy()
-
